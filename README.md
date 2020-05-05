@@ -1,6 +1,6 @@
-# Group 21 Spotify Project
-- Matt Finney
-- Kaivalya Rawal
+# CS205 Group 2 - Computing the spread of COVID-19
+- Cooper Lorsung
+- Sujay Thakur
 - Royce Yap
 - David Zheng
 
