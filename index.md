@@ -1,7 +1,7 @@
 <div style="text-align: right"> <a href="https://raw.githubusercontent.com/not-a-hot-dog/spotify_project/master/Spotify_Playlist_Generation_Group_21_Models.ipynb">Download Notebook</a> </div>  
 <div style="text-align: right"> <a href="https://drive.google.com/file/d/1vKTZ4S0wiGxiffjPxnth1rrBXIOTcLCQ/view?usp=sharing">Download Data</a> </div>  
 ## Project Overview 
-Playlists are at the core of Spotify's business. Playlists are made up of collections of tracks that cater to different occasions, mood or listening styles. Tracks in the same playlist are meant to be similar, at least to a significant subset of listeners. Spotify itself actively curates Playlists that are followed by millions of Spotify listeners. Knowing which song to add to a Playlist forms the basis of recommender systems used by music companies such as Spotify. By applying available machine learning techniques to existing Spotify playlist and track data, our project goal is that of automatic playlist generation, where we create models for song discovery by starting with an initial playlist chosen by a user.
+CS205 Project Description
 
 <br>
 
