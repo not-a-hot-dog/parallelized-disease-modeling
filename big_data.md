@@ -1,4 +1,4 @@
-## Big Data - Creating a 1792 x 2944 Square-Mile Grid of the U.S.
+## Big Data - Mapping a 1792 x 2944 Square-Mile Grid to U.S. County Data
 
 ### Description of Parallel Application
 Technical description of the parallel application, programming models, platform and infrastructure
