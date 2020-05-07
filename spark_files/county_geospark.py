@@ -21,7 +21,7 @@ upload_jars()
 GeoSparkRegistrator.registerAll(spark)
 
 # Load matrix of coordinates and US county data into Spark and GeoPandas
-original_matrix_df = spark.read.format("csv").option("header", "true").load("full-coord-matrixv2.csv")
+original_matrix_df = spark.read.format("csv").option("header", "true").load("geospark_matrix.csv")
 original_geo_df = gpd.read_file("cb_2018_us_county_500k/cb_2018_us_county_500k.shp")
 
 # Map Polygon in geometry field of geo_d fto WKT (well-known-text) format and rename as counties_df 
