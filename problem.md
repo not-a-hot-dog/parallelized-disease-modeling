@@ -1,7 +1,7 @@
-## Description of problem
+## Problem
 Problem we are solving and why the need for HPC and/or Big Data
 
-## Description of solution
+## Solution
 How does it compare with existing work on the problem
 
 ## Description of model and data 
