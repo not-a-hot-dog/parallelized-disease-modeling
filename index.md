@@ -4,7 +4,7 @@
 <br>
 
 <p align="center">
-<img src="hhttps://phil.cdc.gov//PHIL_Images/23311/23311_lores.jpg" height="400"/>
+<img src="https://phil.cdc.gov//PHIL_Images/23311/23311_lores.jpg" height="400"/>
 </p>
 
 Blah-Blah
