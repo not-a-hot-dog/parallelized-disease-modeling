@@ -8,7 +8,3 @@
 </p>
 
 Blah-Blah
-
-## Description of problem and the need for HPC and/or Big Data
-
-Blah-blah
