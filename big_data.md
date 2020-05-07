@@ -1,4 +1,4 @@
-## Big Data
+## Big Data - Creating a Grid for a Not-So-Flat U.S.A
 
 ### Description of Parallel Application
 Technical description of the parallel application, programming models, platform and infrastructure
