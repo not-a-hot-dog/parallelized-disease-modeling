@@ -3,8 +3,6 @@
 ### Description of Parallel Application
 Technical description of the parallel application, programming models, platform and infrastructure
 
-### Pre-Processing Required
-
 ### Use of Geospark
 Description of advanced features like models/platforms not explained in class, advanced functions of modules, techniques to mitigate overheads, challenging parallelization or implementation aspects...
 
