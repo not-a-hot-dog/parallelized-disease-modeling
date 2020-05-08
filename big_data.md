@@ -65,7 +65,7 @@ To put things in perspective, we processed **5,275,648** lines of the above usin
 To implement this required bootstrapping the AWS EMR cluster using a Bash script ([link](https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/master/spark_files/bashscript_aws.sh)). Miniconda was used to install required packages across the nodes in the cluster, particularly because it handles the installation of GeoSpark and its dependencies.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/EMR_bash.PNG.PNG">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/EMR_bash.PNG">
 </p>
 
 The above script does the following:
