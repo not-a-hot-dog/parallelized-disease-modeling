@@ -1,31 +1,84 @@
 # Big Data - Mapping a Square-Mile Grid of the U.S. to County Data
 
-To ensure that each square-mile of the 1792 x 2944 grid of continential U.S. takes in granular demographic information relating to that square-mile, we would need to map each square-mile to a particular county. Our goal is to create a matrix with each entry in the matrix corresponding to a county ID, that can be then mapped to specific data relating to the county (e.g. population) This information can then be used to generate matrices of $\beta$ and $\gamma$ that can be fed into the SIR epidemic model.
+To ensure that each square-mile of the 1792 x 2944 grid of continential U.S. takes in granular demographic information relating to that square-mile, we would need to map each square-mile to a particular county. Our goal is to create a matrix with each entry in the matrix corresponding to a county ID, that can be then mapped to specific data relating to the county (e.g. population) This information can then be used to generate matrices of Betas and Gammas that can be fed into the SIR epidemic model.
 
-As of 2020, there are currently 3,143 counties and county-equivalents in the 50 states and the District of Columbia. 
+Firstly, having realized that the earth is not flat, we had to use the [Haversine](https://en.wikipedia.org/wiki/Haversine_formula) formula to map each point in the 1792 x 2944 grid to a pair of coordinates corresponding to the latitude and longitude of that point.
 
+<p align="center">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Law-of-haversines.svg/220px-Law-of-haversines.svg.png" height="100"/>
+</p>
 
+This returned us a coordinate matrix of size 1792 (North-South distance) x 2944 (East-West Distance) x 2 (Latitude & Longitude), which we then had to map to U.S. county IDs in the US. As of 2020, there are around 3,233 counties and county-equivalents in the 50 states and the District of Columbia, implying that some of these square-mile points map to more than one county/county-equivalent.
 
-To run a simulation of how the virus spreads across the US geographically, we would require creating a grid of continental U.S. For the purpose of granularity, we would like each point on this grid to represent a square mile.  
+## Challenge
 
-So we want to solve a set of spatio-temporal PDEs over the entire US. What kind of a grid are we looking at here? Let us do a classic engineering first order approximation and pretend the US is perfectly rectangular, 2500 miles wide horizontally and 1500 miles wide vertically. Assuming we want to work at a typical granularity of 1 mile, this means a 1501 x 2501 grid of solutions. As with typical PDE discretization methods, this means a solution array of roughly 4 million terms. Iterating over this many grid points over different time intervals with various different policies implemented requires some big computate, using some standard sparse PDE method like Jacobi iteration. We can use methods of accelerated computing, shared memory parallel processing, distributed memory parallel processing and some sort of hybrid model, and these will be further elaborated on by Royce.
+Here, the challenge that is solved by parallel application is that of determining which county a specific coordinate belongs to, based on its longitude and latitude. This is not as straightforward as it sounds and we were unable to find any prior existing work that had done  such a mapping.
 
+We obtained geographical information on U.S. counties from the Census' [TIGER Geodatabases](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html). The geographical boundaries of every single county is captured in a shapefile format that can be read as a Polygon object by [Geopandas](https://geopandas.org/). 
 
-Majority of current models project COVID at a statewide level or focus on large densely populated areas.
-Rural communities are especially underequipped to combat this virus.
-We aim to model how covid 19 will spread throughout communities large and small.
-We will then model how effectiveness of various containment measures.
-The ability to model virus spread and containment at a micro level will allow officials to allocate resources to best combat the virus in their community.
+<p align="center">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/County_Info.PNG">
+</p>
 
+To verify if each pair of coordinates fell within the geographical boundary of a county, the `within` Geopandas method had to be used, since there is no pre-existing hash table mapping every single unique coordinate to a county. Only if the method returned the value "True" would we assign the coordinate to a particular [GEOID](https://www.census.gov/programs-surveys/geography/guidance/geo-identifiers.html).
+
+The task to be completed then was to run through the 5,275,648 pairs of coordinates through the 3,233 unique GEOIDs in the file, representing a run-time complexity of O(m x n), where m is 5 million and n is 3,000. 
 
 ## Description of Parallel Application
-Technical description of the parallel application, programming models, platform and infrastructure
 
-## Use of Geospark
-Description of advanced features like models/platforms not explained in class, advanced functions of modules, techniques to mitigate overheads, challenging parallelization or implementation aspects...
+Parallelizing this application via Spark did not seem possible since the functions do not include the ability to work with geometry objects containing information on the boundaries of the counties.
+
+To implement this parallel application on Hadoop, we used [Geospark](https://datasystemslab.github.io/GeoSpark/), which is a cluster computing system for processing large-scale spatial data. GeoSpark "extends Apache Spark / SparkSQL with a set of out-of-the-box Spatial Resilient Distributed Datasets (SRDDs)/ SpatialSQL that efficiently load, process, and analyze large-scale spatial data across machines".
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/DataSystemsLab/GeoSpark/master/GeoSpark_logo.png">
+</p>
+
+We used Amazon's EMR cluster to provide the Hadoop infrastructure required for implementing our parallel application, with the following setup:
+- Release label:emr-5.29.0
+- Hadoop distribution:Amazon 2.8.5
+- Applications:Spark 2.4.4
+- Master Node: m4.2xlarge
+- Worker Node: m4.xlarge (varying from 1 to 16 nodes)
+
+## Implementation of Spark / GeoSpark
+
+First, after loading in a flattened matrix of coordinates as a Spark DataFrame, we use Spark SQL to create new column location with each location as a [ST_POINT](https://datasystemslab.github.io/GeoSpark/api/sql/GeoSparkSQL-Constructor/) object containing each coordinate pair.
+
+Next, we load in the Census Data on the counties and map the Polygon object in the geometry field to a WKT (well-known-text) format before converting it into a Spark DataFrame.
+
+This comes the important step, where we implement the [ST_INTERSECTS method] (https://datasystemslab.github.io/GeoSpark/api/sql/GeoSparkSQL-Predicate/#st_intersects) in Spark SQL, which is key in allowing us to parallelize our lookup operation.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/Geospark_SQL.PNG">
+</p>
+
+We then merged data on the original coordinates with the mapped counties and converted this into a RDD format, which is then saved as a text file on the Hadoop File System. A sample output of the text file is shown below, where the first and second column represent the latitude/longitude, the third and fourth columns represent the row and column position in the matrix and the last column represents the county GEOID.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/Spark_Output.PNG">
+</p>
+
+To put things in perspective, we processed **5,275,648** lines of the above using Spark.
 
 ## Technical Description
-Technical description of the software design, code baseline, dependencies, how to use the code, and system and environment needed to reproduce your tests
+To implement this required bootstrapping the AWS EMR cluster using a Bash script ([link](https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/master/spark_files/bashscript_aws.sh)) that does the following:
+- Downloads Miniconda
+- Installs required dependencies (geospark, pandas, geopandas, haversine) using Miniconda
+- Downloads Java ARchive (JAR) files required for geospark onto EMR cluster
+
+Separately, to ensure that GeoSpark runs smoothly, the configuration below also had to be added via a JSON when setting up the EMR cluster, to ensure that the JAR files are loaded when you creating a Spark instance.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/EMR_config.PNG">
+</p>
+
+Lastly, the SPARK_HOME environment variables need to be set before running the Spark instance:
+`export SPARK_HOME=/usr/lib/spark`
+
+The following two lines are also added to `/usr/lib/spark/conf/spark-env.sh`:
+`export PYSPARK_PYTHON=/home/hadoop/conda/bin/python`     
+`export PYSPARK_DRIVER_PYTHON=/home/hadoop/conda/bin/python`
 
 ## Performance Evaluation
-Performance evaluation (speed-up, throughput, weak and strong scaling) and discussion about overheads and optimizations done
+
