@@ -91,13 +91,13 @@ The following two lines are also added to `/usr/lib/spark/conf/spark-env.sh`: <b
 Our first attempt at implementing the county mapping operation using the multi-processing module on Python with 4 cores returned us with a run-time of 7 hours and 37 minutes.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/python_runtime.PNG" height="50"/>
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/python_runtime.PNG" height="150"/>
 </p>
 
 With Spark and Hadoop, we are talking about a completely different magnitude, with 130 seconds recorded as the fastest time with 16 m4.xlarge nodes, each with a supposed 4 cores (Ignacio: in reality a number of cores between 2 and 3).
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/Spark_Runtime.PNG">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/Spark_Runtime.PNG" height="150"/>
 </p>
 
 As shown below, by varying the number of worker nodes from 2, 4, 8, 12, 16, we are able to plot the speed-up of the Spark application which plateaus as it increases, with a single worker node taking 436 seconds or ~7 minutes.
