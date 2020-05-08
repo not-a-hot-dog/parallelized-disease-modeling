@@ -143,6 +143,7 @@ int main(int argc, char ** argv)
 
 	/* Allocate and initialize arrays */
 	/* Initialize tmp arrays */
+	printf("Initializing Arrays...\n");
 	S = calloc(Ymax, sizeof(double * ));
 	I = calloc(Ymax, sizeof(double * ));
 	R = calloc(Ymax, sizeof(double * ));
@@ -157,6 +158,7 @@ int main(int argc, char ** argv)
 	initialise(S, I, R, Xmax, Ymax);
 
 	/* Run the solver */
+	printf("Simulating...\n");
 	get_time( & tstart);
 	simulate(nsteps, S, I, R, beta, gamma, dS, dI, dR, Xmax, Ymax);
 	get_time( & tend);

@@ -3,6 +3,21 @@
 #include <string.h>
 #include <omp.h>
 
+void write_solution(char const* filename, int Xmax, int Ymax, double **I)
+{
+    int i, j;
+    FILE *fp = fopen(filename, "w+");
+    for (i = 0; i < Ymax; ++i)
+	{
+		for (j = 0; j < Xmax; ++j)
+		{
+			fprintf(fp, "%g ", I[i][j]);
+		}
+		fprintf(fp, "\n");
+	}
+    fclose(fp);
+}
+
 void initialise(double ** S, double ** I, double ** R, int Xmax, int Ymax) 
 {
 	/* 
@@ -75,35 +90,31 @@ double gamma, double dS, double dI, double dR, int Xmax, int Ymax)
 		{
 			/* Old data in sir; new data in sirtmp */
 			#pragma omp for collapse(2) 
+			for (i = 1; i < Ymax - 1; ++i) 
 			{
-				for (i = 1; i < Ymax - 1; ++i) 
+				for (j = 1; j < Xmax - 1; ++j) 
 				{
-					for (j = 1; j < Xmax - 1; ++j) 
-					{
-						Stmp[i][j] = S[i][j] - beta * S[i][j] * I[i][j] 
-						+ dS * (S[i + 1][j] + S[i - 1][j] - 4 * S[i][j] + S[i][j + 1] + S[i][j - 1]);
-						Itmp[i][j] = I[i][j] + beta * S[i][j] * I[i][j] - gamma * I[i][j] 
-						+ dI * (I[i + 1][j] + I[i - 1][j] - 4 * I[i][j] + I[i][j + 1] + I[i][j - 1]);
-						Rtmp[i][j] = R[i][j] + gamma * I[i][j] 
-						+ dR * (R[i + 1][j] + R[i - 1][j] - 4 * R[i][j] + R[i][j + 1] + R[i][j - 1]);
-					}
+					Stmp[i][j] = S[i][j] - beta * S[i][j] * I[i][j] 
+					+ dS * (S[i + 1][j] + S[i - 1][j] - 4 * S[i][j] + S[i][j + 1] + S[i][j - 1]);
+					Itmp[i][j] = I[i][j] + beta * S[i][j] * I[i][j] - gamma * I[i][j] 
+					+ dI * (I[i + 1][j] + I[i - 1][j] - 4 * I[i][j] + I[i][j + 1] + I[i][j - 1]);
+					Rtmp[i][j] = R[i][j] + gamma * I[i][j] 
+					+ dR * (R[i + 1][j] + R[i - 1][j] - 4 * R[i][j] + R[i][j + 1] + R[i][j - 1]);
 				}
 			}
 
 			/* Old data in sirtmp; new data in sir */
 			#pragma omp for collapse(2) 
+			for (i = 1; i < Ymax - 1; ++i) 
 			{
-				for (i = 1; i < Ymax - 1; ++i) 
+				for (j = 1; j < Xmax - 1; ++j) 
 				{
-					for (j = 1; j < Xmax - 1; ++j) 
-					{
-						S[i][j] = Stmp[i][j] - beta * Stmp[i][j] * Itmp[i][j] 
-						+ dS * (Stmp[i + 1][j] + Stmp[i - 1][j] - 4 * Stmp[i][j] + Stmp[i][j + 1] + Stmp[i][j - 1]);
-						I[i][j] = Itmp[i][j] + beta * Stmp[i][j] * Itmp[i][j] - gamma * Itmp[i][j] 
-						+ dI * (Itmp[i + 1][j] + Itmp[i - 1][j] - 4 * Itmp[i][j] + Itmp[i][j + 1] + Itmp[i][j - 1]);
-						R[i][j] = Rtmp[i][j] + gamma * Itmp[i][j] 
-						+ dR * (Rtmp[i + 1][j] + Rtmp[i - 1][j] - 4 * Rtmp[i][j] + Rtmp[i][j + 1] + Rtmp[i][j - 1]);
-					}
+					S[i][j] = Stmp[i][j] - beta * Stmp[i][j] * Itmp[i][j] 
+					+ dS * (Stmp[i + 1][j] + Stmp[i - 1][j] - 4 * Stmp[i][j] + Stmp[i][j + 1] + Stmp[i][j - 1]);
+					I[i][j] = Itmp[i][j] + beta * Stmp[i][j] * Itmp[i][j] - gamma * Itmp[i][j] 
+					+ dI * (Itmp[i + 1][j] + Itmp[i - 1][j] - 4 * Itmp[i][j] + Itmp[i][j + 1] + Itmp[i][j - 1]);
+					R[i][j] = Rtmp[i][j] + gamma * Itmp[i][j] 
+					+ dR * (Rtmp[i + 1][j] + Rtmp[i - 1][j] - 4 * Rtmp[i][j] + Rtmp[i][j + 1] + Rtmp[i][j - 1]);
 				}
 			}
 		}
@@ -121,6 +132,7 @@ int main(int argc, char ** argv)
 	double beta, gamma, dS, dI, dR;
 	double **S, **I, **R;
 	double tstart, tend;
+	char  *output_filename;
 
 	/* Process arguments */
 	Xmax = (argc > 1) ? atoi(argv[1]) : 100;
@@ -131,6 +143,7 @@ int main(int argc, char ** argv)
 	dS = (argc > 6) ? atoi(argv[6]) : 0.01;
 	dI = (argc > 7) ? atoi(argv[7]) : 0.01;
 	dR = (argc > 8) ? atoi(argv[8]) : 0.01;
+	output_filename = (argc > 10) ? argv[10] : NULL;
 
     /* Print a diagnostic message */
     #pragma omp parallel
@@ -139,6 +152,7 @@ int main(int argc, char ** argv)
 
 	/* Allocate and initialize arrays */
 	/* Initialize tmp arrays */
+	printf("Initializing Arrays...\n");
 	S = calloc(Ymax, sizeof(double * ));
 	I = calloc(Ymax, sizeof(double * ));
 	R = calloc(Ymax, sizeof(double * ));
@@ -153,6 +167,7 @@ int main(int argc, char ** argv)
 	initialise(S, I, R, Xmax, Ymax);
 
 	/* Run the solver */
+	printf("Simulating...\n");
 	tstart = omp_get_wtime();
 	simulate(nsteps, S, I, R, beta, gamma, dS, dI, dR, Xmax, Ymax);
 	tend = omp_get_wtime();
@@ -162,6 +177,10 @@ int main(int argc, char ** argv)
 	"Elapsed time: %g s\n",
 	Xmax, Ymax, nsteps, tend - tstart);
 
+	/* Write the I results */
+	if (output_filename)
+		write_solution(output_filename, Xmax, Ymax, I);
+		
 	free(S);
 	free(I);
 	free(R);
