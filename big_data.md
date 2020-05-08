@@ -88,3 +88,34 @@ The following two lines are also added to `/usr/lib/spark/conf/spark-env.sh`: <b
 
 ## Performance Evaluation
 
+Our first attempt at implementing the county mapping operation using the multi-processing module on Python with 4 cores returned us with a run-time of 7 hours and 37 minutes.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/python_runtime.PNG">
+</p>
+
+With Spark and Hadoop, we are talking about a completely different magnitude, with 130 seconds recorded as the fastest time with 16 m4.xlarge nodes, each with a supposed 4 cores (Ignacio: in reality a number of cores between 2 and 3).
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/Spark_Runtime.PNG
+">
+</p>
+
+As shown below, by varying the number of worker nodes from 2, 4, 8, 12, 16, we are able to plot the speed-up of the Spark application which plateaus as it increases, with a single worker node taking 436 seconds or ~7 minutes.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/Spark_Runtime.PNG
+">
+</p>
+
+While we observe some version of Strong Scaling predicted by Amdahl's Law, given the parallelization overheads undertaken by Spark in terms of communicating and synchronizing the data across the various nodes, it is expected that the speedup will plateau.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/Speedup.png">
+</p>
+
+In fact, below, through the logs, we obtain a glimpse of how the YARN scheduler is killing some of the executors through the process, reducing the "new desired total" to below what we had provisioned for.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/executors_killed.PNG">
+</p>
