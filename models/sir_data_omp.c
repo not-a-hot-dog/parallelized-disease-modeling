@@ -93,37 +93,35 @@ double **gamma, double **dS, double **dI, double **dR, int Xmax, int Ymax)
 		{
 			/* Old data in sir; new data in sirtmp */
 			#pragma omp for collapse(2)
+			for (i = 1; i < Ymax - 1; ++i) 
 			{
-				for (i = 1; i < Ymax - 1; ++i) 
+				for (j = 1; j < Xmax - 1; ++j) 
 				{
-					for (j = 1; j < Xmax - 1; ++j) 
-					{
-						Stmp[i][j] = S[i][j] - beta[i][j] * S[i][j] * I[i][j] 
-							+ dS[i][j] * (S[i + 1][j] + S[i - 1][j] - 4 * S[i][j] + S[i][j + 1] + S[i][j - 1]);
-						Itmp[i][j] = I[i][j] + beta[i][j] * S[i][j] * I[i][j] - gamma[i][j] * I[i][j] 
-							+ dI[i][j] * (I[i + 1][j] + I[i - 1][j] - 4 * I[i][j] + I[i][j + 1] + I[i][j - 1]);
-						Rtmp[i][j] = R[i][j] + gamma[i][j] * I[i][j] 
-							+ dR[i][j] * (R[i + 1][j] + R[i - 1][j] - 4 * R[i][j] + R[i][j + 1] + R[i][j - 1]);
-					}
+					Stmp[i][j] = S[i][j] - beta[i][j] * S[i][j] * I[i][j] 
+						+ dS[i][j] * (S[i + 1][j] + S[i - 1][j] - 4 * S[i][j] + S[i][j + 1] + S[i][j - 1]);
+					Itmp[i][j] = I[i][j] + beta[i][j] * S[i][j] * I[i][j] - gamma[i][j] * I[i][j] 
+						+ dI[i][j] * (I[i + 1][j] + I[i - 1][j] - 4 * I[i][j] + I[i][j + 1] + I[i][j - 1]);
+					Rtmp[i][j] = R[i][j] + gamma[i][j] * I[i][j] 
+						+ dR[i][j] * (R[i + 1][j] + R[i - 1][j] - 4 * R[i][j] + R[i][j + 1] + R[i][j - 1]);
 				}
 			}
+			
 
 			/* Old data in sirtmp; new data in sir */
-			#pragma omp for collapse(2)
+			#pragma omp for collapse(2)	
+			for (i = 1; i < Ymax - 1; ++i) 
 			{
-				for (i = 1; i < Ymax - 1; ++i) 
+				for (j = 1; j < Xmax - 1; ++j) 
 				{
-					for (j = 1; j < Xmax - 1; ++j) 
-					{
-						S[i][j] = Stmp[i][j] - beta[i][j] * Stmp[i][j] * Itmp[i][j] 
-						+ dS[i][j] * (Stmp[i + 1][j] + Stmp[i - 1][j] - 4 * Stmp[i][j] + Stmp[i][j + 1] + Stmp[i][j - 1]);
-						I[i][j] = Itmp[i][j] + beta[i][j] * Stmp[i][j] * Itmp[i][j] - gamma[i][j] * Itmp[i][j] 
-						+ dI[i][j] * (Itmp[i + 1][j] + Itmp[i - 1][j] - 4 * Itmp[i][j] + Itmp[i][j + 1] + Itmp[i][j - 1]);
-						R[i][j] = Rtmp[i][j] + gamma[i][j] * Itmp[i][j] 
-						+ dR[i][j] * (Rtmp[i + 1][j] + Rtmp[i - 1][j] - 4 * Rtmp[i][j] + Rtmp[i][j + 1] + Rtmp[i][j - 1]);
-					}
+					S[i][j] = Stmp[i][j] - beta[i][j] * Stmp[i][j] * Itmp[i][j] 
+					+ dS[i][j] * (Stmp[i + 1][j] + Stmp[i - 1][j] - 4 * Stmp[i][j] + Stmp[i][j + 1] + Stmp[i][j - 1]);
+					I[i][j] = Itmp[i][j] + beta[i][j] * Stmp[i][j] * Itmp[i][j] - gamma[i][j] * Itmp[i][j] 
+					+ dI[i][j] * (Itmp[i + 1][j] + Itmp[i - 1][j] - 4 * Itmp[i][j] + Itmp[i][j + 1] + Itmp[i][j - 1]);
+					R[i][j] = Rtmp[i][j] + gamma[i][j] * Itmp[i][j] 
+					+ dR[i][j] * (Rtmp[i + 1][j] + Rtmp[i - 1][j] - 4 * Rtmp[i][j] + Rtmp[i][j + 1] + Rtmp[i][j - 1]);
 				}
 			}
+			
 		}
 	}
 
@@ -148,9 +146,9 @@ int main(int argc, char ** argv)
 	S_init_filename = (argc > 4) ? argv[4] : "../data/S_init.csv";
 	I_init_filename = (argc > 5) ? argv[5] : "../data/I_init.csv";
 	R_init_filename = (argc > 6) ? argv[6] : "../data/R_init.csv";
-	dS_filename = (argc > 7) ? atoi(argv[7]) : "../data/dS.csv";
-	dI_filename = (argc > 8) ? atoi(argv[8]) : "../data/dI.csv";
-	dR_filename = (argc > 9) ? atoi(argv[9]) : "../data/dR.csv";
+	dS_filename = (argc > 7) ? argv[7] : "../data/dS.csv";
+	dI_filename = (argc > 8) ? argv[8] : "../data/dI.csv";
+	dR_filename = (argc > 9) ? argv[9] : "../data/dR.csv";
 	output_filename = (argc > 10) ? argv[10] : NULL;
 	Xmax = (argc > 11) ? atoi(argv[11]) : 2944;
 	Ymax = (argc > 12) ? atoi(argv[12]) : 1792;
