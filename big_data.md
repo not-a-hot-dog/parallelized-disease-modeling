@@ -62,10 +62,16 @@ We then merged data on the original coordinates with the mapped counties and con
 To put things in perspective, we processed **5,275,648** lines of the above using Spark.
 
 ## Technical Description
-To implement this required bootstrapping the AWS EMR cluster using a Bash script ([link](https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/master/spark_files/bashscript_aws.sh)) that does the following:
+To implement this required bootstrapping the AWS EMR cluster using a Bash script ([link](https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/master/spark_files/bashscript_aws.sh)). Miniconda was used to install required packages across the nodes in the cluster, particularly because it handles the installation of GeoSpark and its dependencies.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/EMR_bash.PNG">
+</p>
+
+The above script does the following:
 - Downloads Miniconda
-- Installs required dependencies (geospark, pandas, geopandas, haversine) using Miniconda
-- Downloads Java ARchive (JAR) files required for geospark onto EMR cluster
+- Installs required packages (Geospark, Pandas, Geopandas, Haversine) across all nodes in the cluster
+- Downloads Java ARchive (JAR) files required for GeoSpark onto EMR cluster
 
 Separately, to ensure that GeoSpark runs smoothly, the configuration below also had to be added via a JSON when setting up the EMR cluster, to ensure that the JAR files are loaded when you creating a Spark instance.
 
@@ -73,10 +79,10 @@ Separately, to ensure that GeoSpark runs smoothly, the configuration below also 
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/EMR_config.PNG">
 </p>
 
-Lastly, the SPARK_HOME environment variables need to be set before running the Spark instance:
+Lastly, the SPARK_HOME environment variables need to be set before running the Spark instance: <br>
 `export SPARK_HOME=/usr/lib/spark`
 
-The following two lines are also added to `/usr/lib/spark/conf/spark-env.sh`:
+The following two lines are also added to `/usr/lib/spark/conf/spark-env.sh`: <br>
 `export PYSPARK_PYTHON=/home/hadoop/conda/bin/python`     
 `export PYSPARK_DRIVER_PYTHON=/home/hadoop/conda/bin/python`
 
