@@ -51,4 +51,5 @@ results = coord_df.join(mapped_county_coord, ['lat','lon'], 'left')
 
 # Convert the DataFrame to a RDD before mapping it to a tuple
 RDD = results.rdd.map(tuple)
+RDD = RDD.map(lambda tup: str(float(tup[0])) + "," + str(float(tup[1])) + "," + str(int(float(tup[2]))) + "," + str(int(float(tup[3]))) + "," + str(tup[4]))
 RDD.saveAsTextFile("s3://emr-example-python-ryzy1990/spark_output_geodf2")
