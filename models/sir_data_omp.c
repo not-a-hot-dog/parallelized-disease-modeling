@@ -3,8 +3,6 @@
 #include <string.h>
 #include <omp.h>
 
-#include "timing.h"
-
 double** read_csv(char const* filename, int Xmax, int Ymax)
 {
     char buffer[75000];
@@ -101,11 +99,11 @@ double **gamma, double **dS, double **dI, double **dR, int Xmax, int Ymax)
 					for (j = 1; j < Xmax - 1; ++j) 
 					{
 						Stmp[i][j] = S[i][j] - beta[i][j] * S[i][j] * I[i][j] 
-						+ dS[i][j] * (S[i + 1][j] + S[i - 1][j] - 4 * S[i][j] + S[i][j + 1] + S[i][j - 1]);
+							+ dS[i][j] * (S[i + 1][j] + S[i - 1][j] - 4 * S[i][j] + S[i][j + 1] + S[i][j - 1]);
 						Itmp[i][j] = I[i][j] + beta[i][j] * S[i][j] * I[i][j] - gamma[i][j] * I[i][j] 
-						+ dI[i][j] * (I[i + 1][j] + I[i - 1][j] - 4 * I[i][j] + I[i][j + 1] + I[i][j - 1]);
+							+ dI[i][j] * (I[i + 1][j] + I[i - 1][j] - 4 * I[i][j] + I[i][j + 1] + I[i][j - 1]);
 						Rtmp[i][j] = R[i][j] + gamma[i][j] * I[i][j] 
-						+ dR[i][j] * (R[i + 1][j] + R[i - 1][j] - 4 * R[i][j] + R[i][j + 1] + R[i][j - 1]);
+							+ dR[i][j] * (R[i + 1][j] + R[i - 1][j] - 4 * R[i][j] + R[i][j + 1] + R[i][j - 1]);
 					}
 				}
 			}
@@ -141,7 +139,7 @@ int main(int argc, char ** argv)
 		 *S_init_filename, *I_init_filename, *R_init_filename,
 		 *dS_filename, *dI_filename, *dR_filename,
 		 *output_filename;
-	timing_t tstart, tend;
+	double tstart, tend;
 
 	/* Process arguments */
 	nsteps = (argc > 1) ? atoi(argv[1]) : 100;
@@ -150,12 +148,17 @@ int main(int argc, char ** argv)
 	S_init_filename = (argc > 4) ? argv[4] : "../data/S_init.csv";
 	I_init_filename = (argc > 5) ? argv[5] : "../data/I_init.csv";
 	R_init_filename = (argc > 6) ? argv[6] : "../data/R_init.csv";
-	dS_filename = (argc > 7) ? argv[7] : "../data/dS.csv";
-	dI_filename = (argc > 8) ? argv[8] : "../data/dI.csv";
-	dR_filename = (argc > 9) ? argv[9] : "../data/dR.csv";
-	output_filename = (argc > 10) ? argv[10] : "../results/output";
+	dS_filename = (argc > 7) ? atoi(argv[7]) : "../data/dS.csv";
+	dI_filename = (argc > 8) ? atoi(argv[8]) : "../data/dI.csv";
+	dR_filename = (argc > 9) ? atoi(argv[9]) : "../data/dR.csv";
+	output_filename = (argc > 10) ? argv[10] : NULL;
 	Xmax = (argc > 11) ? atoi(argv[11]) : 2944;
 	Ymax = (argc > 12) ? atoi(argv[12]) : 1792;
+
+    /* Print a diagnostic message */
+    #pragma omp parallel
+    if (omp_get_thread_num() == 0)
+        printf("Threads: %d\n", omp_get_num_threads());
 
 	// initialise(S, I, R, Xmax, Ymax);
 	printf("Initializing Arrays...\n");
@@ -169,19 +172,20 @@ int main(int argc, char ** argv)
 	double **beta = read_csv(beta_filename, Xmax, Ymax);
 	double **gamma = read_csv(gamma_filename, Xmax, Ymax);
 
-/* Run the solver */
+	/* Run the solver */
 	printf("Simulating...\n");
-	get_time( & tstart);
+	tstart = omp_get_wtime();
 	simulate(nsteps, S, I, R, beta, gamma, dS, dI, dR, Xmax, Ymax);
-	get_time( & tend);
+	tend = omp_get_wtime();
 	printf("\nXmax: %d\n"
 	"Ymax: %d\n"
 	"Timesteps: %d\n"
 	"\nElapsed Time: %g s\n",
-	Xmax, Ymax, nsteps, timespec_diff(tstart, tend));
+	Xmax, Ymax, nsteps, tend - tstart);
 
 	/* Write the I results */
-	write_solution(output_filename, Xmax, Ymax, I);
+	if (output_filename)
+		write_solution(output_filename, Xmax, Ymax, I);
 
 	free(S);
 	free(I);

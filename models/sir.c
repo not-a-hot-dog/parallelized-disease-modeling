@@ -51,9 +51,9 @@ void simulate(int nsweeps, double **S, double **I, double **R, double beta,
 double gamma, double dS, double dI, double dR, int Xmax, int Ymax) 
 {
 	/* Initialize tmp arrays */
-	double **Stmp = calloc(Ymax, sizeof(double * ));
-	double **Itmp = calloc(Ymax, sizeof(double * ));
-	double **Rtmp = calloc(Ymax, sizeof(double * ));
+	double ** Stmp = calloc(Ymax, sizeof(double * ));
+	double ** Itmp = calloc(Ymax, sizeof(double * ));
+	double ** Rtmp = calloc(Ymax, sizeof(double * ));
 
 	for (int i = 0; i < Ymax; ++i) 
 	{
@@ -139,11 +139,10 @@ int main(int argc, char ** argv)
 	dS = (argc > 6) ? atoi(argv[6]) : 0.01;
 	dI = (argc > 7) ? atoi(argv[7]) : 0.1;
 	dR = (argc > 8) ? atoi(argv[8]) : 0.01;
-	output_filename = (argc > 9) ? argv[9] : "../results/output";
+	output_filename = (argc > 9) ? argv[9] : NULL;
 
 	/* Allocate and initialize arrays */
 	/* Initialize tmp arrays */
-	printf("Initializing Arrays...\n");
 	S = calloc(Ymax, sizeof(double * ));
 	I = calloc(Ymax, sizeof(double * ));
 	R = calloc(Ymax, sizeof(double * ));
@@ -158,7 +157,6 @@ int main(int argc, char ** argv)
 	initialise(S, I, R, Xmax, Ymax);
 
 	/* Run the solver */
-	printf("Simulating...\n");
 	get_time( & tstart);
 	simulate(nsteps, S, I, R, beta, gamma, dS, dI, dR, Xmax, Ymax);
 	get_time( & tend);
@@ -169,7 +167,8 @@ int main(int argc, char ** argv)
 	Xmax, Ymax, nsteps, timespec_diff(tstart, tend));
 
 	/* Write the I results */
-	write_solution(output_filename, Xmax, Ymax, I);
+	if (output_filename)
+		write_solution(output_filename, Xmax, Ymax, I);
 
 	free(S);
 	free(I);

@@ -50,8 +50,8 @@ void write_solution(char const* filename, int Xmax, int Ymax, double **I)
     fclose(fp);
 }
 
-void simulate(int nsweeps, double ** S, double ** I, double ** R, double ** beta, 
-double ** gamma, double **dS, double **dI, double **dR, int Xmax, int Ymax) 
+void simulate(int nsweeps, double **S, double **I, double **R, double **beta, 
+double **gamma, double **dS, double **dI, double **dR, int Xmax, int Ymax) 
 {
 	/* Initialize tmp arrays */
 	double **Stmp = calloc(Ymax, sizeof(double * ));
@@ -96,11 +96,11 @@ double ** gamma, double **dS, double **dI, double **dR, int Xmax, int Ymax)
             for (j = 1; j < Xmax - 1; ++j) 
             {
                 Stmp[i][j] = S[i][j] - beta[i][j] * S[i][j] * I[i][j] 
-                + dS[i][j] * (S[i + 1][j] + S[i - 1][j] - 4 * S[i][j] + S[i][j + 1] + S[i][j - 1]);
+                	+ dS[i][j] * (S[i + 1][j] + S[i - 1][j] - 4 * S[i][j] + S[i][j + 1] + S[i][j - 1]);
                 Itmp[i][j] = I[i][j] + beta[i][j] * S[i][j] * I[i][j] - gamma[i][j] * I[i][j] 
-                + dI[i][j] * (I[i + 1][j] + I[i - 1][j] - 4 * I[i][j] + I[i][j + 1] + I[i][j - 1]);
+                	+ dI[i][j] * (I[i + 1][j] + I[i - 1][j] - 4 * I[i][j] + I[i][j + 1] + I[i][j - 1]);
                 Rtmp[i][j] = R[i][j] + gamma[i][j] * I[i][j] 
-                + dR[i][j] * (R[i + 1][j] + R[i - 1][j] - 4 * R[i][j] + R[i][j + 1] + R[i][j - 1]);
+                	+ dR[i][j] * (R[i + 1][j] + R[i - 1][j] - 4 * R[i][j] + R[i][j + 1] + R[i][j - 1]);
             }
         }
 
@@ -143,7 +143,7 @@ int main(int argc, char ** argv)
 	dS_filename = (argc > 7) ? argv[7] : "../data/dS.csv";
 	dI_filename = (argc > 8) ? argv[8] : "../data/dI.csv";
 	dR_filename = (argc > 9) ? argv[9] : "../data/dR.csv";
-	output_filename = (argc > 10) ? argv[10] : "../results/output";
+	output_filename = (argc > 10) ? argv[10] : NULL;
 	Xmax = (argc > 11) ? atoi(argv[11]) : 2944;
 	Ymax = (argc > 12) ? atoi(argv[12]) : 1792;
 
@@ -171,7 +171,8 @@ int main(int argc, char ** argv)
 	Xmax, Ymax, nsteps, timespec_diff(tstart, tend));
 
 	/* Write the I results */
-	write_solution(output_filename, Xmax, Ymax, I);
+	if (output_filename)
+		write_solution(output_filename, Xmax, Ymax, I);
 
 	free(S);
 	free(I);
