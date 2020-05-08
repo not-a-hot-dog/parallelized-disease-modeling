@@ -84,9 +84,9 @@ double gamma, double dS, double dI, double dR, int Xmax, int Ymax)
 
 	int i, j, sweep;
 
-	#pragma omp parallel 
+	for (sweep = 0; sweep < nsweeps; sweep += 2) 
 	{
-		for (sweep = 0; sweep < nsweeps; sweep += 2) 
+		#pragma omp parallel shared(S,I,R,Stmp,Itmp,Rtmp,beta,gamma,dS,dI,dR,Xmax,Ymax) private(i,j)
 		{
 			/* Old data in sir; new data in sirtmp */
 			#pragma omp for collapse(2) 
