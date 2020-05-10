@@ -32,10 +32,11 @@ project_runs/
 The compiler `gcc/8.2.0-fasrc1` is used. OpenMP comes prebuilt with the compiler.
 Python 3.7.7 is used.
 Runs are executed on the default Odyssey operating system at the time of submission: CentOS Linux release 7.6.1810 (Core).
-Executing the model simple as running `python run.py`.
+Executing the model is as simple as running `python run.py`.
 Slurm job parameters such as number of nodes, cores, runtime, and partition are updated in the `__main__` section of `run.py`.
 Additionally, number of timesteps are updated in the same section.
-The data matrices are generated from population and geographical data using `matrix.npy` and 
+The data matrices are generated from population and geographical data using `matrix.npy` as specified in the simulation tool instructions.
+`run.py` handles compilation and setting appropriate environment variables for number of cores.
 
 ## Performance Evaluation`
 We see a fantastic level of parallelization as number of cores increases using strong scaling.
