@@ -14,11 +14,11 @@ Firstly, having realized that the earth is not flat, we had to use the [Haversin
 <em>Illustration of Haversine distances</em>
 </p>
 
-This returned us a coordinate matrix of size 1792 (North-South distance) x 2944 (East-West Distance) x 2 (Latitude & Longitude), which we then had to map to U.S. county IDs in the US. As of 2020, there are around 3,233 counties and county-equivalents in the 50 states and the District of Columbia, implying that some of these square-mile points map to more than one county/county-equivalent.
+This returned us a coordinate matrix of size 1792 (North-South distance) x 2944 (East-West Distance) x 2 (Latitude & Longitude), which we then had to map to U.S. counties by their FIPS (Federal Information Processing Standard) code.
 
 ## Challenge
 
-Here, the challenge that is solved by parallel application is that of determining which county a specific coordinate belongs to, based on its longitude and latitude. This is not as straightforward as it sounds and we were unable to find any prior existing work that had done  such a mapping.
+Here, the challenge that is solved by parallel application is that of determining which county a specific coordinate belongs to, based on its longitude and latitude. This is not as straightforward as it sounds and we were unable to find any prior existing work that had done such a mapping.
 
 We obtained geographical information on U.S. counties from the Census' [TIGER Geodatabases](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html). The geographical boundaries of every single county is captured in a shapefile format that can be read as a Polygon object by [Geopandas](https://geopandas.org/). 
 
@@ -30,6 +30,19 @@ We obtained geographical information on U.S. counties from the Census' [TIGER Ge
 To verify if each pair of coordinates fell within the geographical boundary of a county, the `within` Geopandas method had to be used, since there is no pre-existing hash table mapping every single unique coordinate to a county. Only if the method returned the value "True" would we assign the coordinate to a particular [GEOID](https://www.census.gov/programs-surveys/geography/guidance/geo-identifiers.html).
 
 The task to be completed then was to run through the 5,275,648 pairs of coordinates through the 3,233 unique GEOIDs in the file, representing a run-time complexity of O(m x n), where m is 5 million and n is 3,000. 
+
+The coordinate mapping returned 3108 unique FIPS codes across 3,121,073 coordinates, the remaining 2,154,575 coordinates were either non-US land or water. The returned FIPS codes exactly matched the 2019 US Census's listing of counties in the continental United States and the District of Colombia.
+
+We furthur verified our results by visually inspecting plots of our matrix again excisting US county maps. For example, compare our mapping of population density against the official map from the US Census Bureau:
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/census-population-density-county-2010.png">
+<em>US Census Map <a href="https://www.census.gov/library/visualizations/2010/geo/population-density-county-2010.html">source</a></em>
+</p>
+<p align="center">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/data_pop_density_2010.png">
+<em>Image generated from our 1792 x 2944 county matrix.</em>
+</p>
 
 ## Description of Parallel Application
 
