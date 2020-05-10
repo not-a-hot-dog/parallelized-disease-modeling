@@ -3,7 +3,7 @@ import numpy as np
 ##Read in data matrix
 data = np.load("data/matrix.npy")
 
-print('Creating data...\n')
+print('Creating data...')
 ##Generate individual CSVs
 S_init_data = data[:, :, 2]
 I_init_data = data[:, :, 3]
@@ -22,7 +22,7 @@ dS_data[isUS_data == 0] = 0
 dI_data[isUS_data == 0] = 0
 dR_data[isUS_data == 0] = 0
 
-print('Saving data...\n')
+print('Saving data...')
 np.savetxt('data/beta.csv', beta_data, delimiter=',')
 np.savetxt('data/gamma.csv', gamma_data, delimiter=',')
 np.savetxt('data/S_init.csv', S_init_data, delimiter=',')
