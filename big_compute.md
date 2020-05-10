@@ -1,4 +1,7 @@
 # Big Compute
+<p align="center">
+<img src="https://github.com/not-a-hot-dog/parallelized-disease-modeling/blob/gh-pages/_images/odyssey_branding.png"/>
+</p>
 
 ## Description of Parallel Application
 OpenMP was used to parallelize computations in our model.
