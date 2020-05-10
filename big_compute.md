@@ -1,6 +1,6 @@
 # Big Compute
 <p align="center">
-<img src="https://github.com/not-a-hot-dog/parallelized-disease-modeling/blob/gh-pages/_images/odyssey_branding.png"/>
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/odyssey_branding.png"/>
 </p>
 
 ## Description of Parallel Application
