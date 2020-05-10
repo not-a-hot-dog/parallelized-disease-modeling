@@ -31,4 +31,4 @@ I^{t+1}_{i,j} &= I^{t}_{i,j}  + d_{I_{i,j}}(I^t_{i + 1,j} + I^t_{i - 1,j} - 4 I^
 R^{t+1}_{i,j} &= R^{t}_{i,j}  + d_{R_{i,j}}(R^t_{i + 1,j} + R^t_{i - 1,j} - 4 R^t_{i ,j} + R^t_{i ,j+1} + R^t_{i ,j-1})+\gamma_{i,j}I^{t}_{i,j}
 \end{aligned}$$
 
-Hence, in this model, for each time step at each grid point, we will be reading in spatial information for $\beta$, $\gamma$, $d_S$, $d_I$, $d_R$ and computing the updates for $S$, $I$ and $R$. We will do this for $2944\times1792 =  5, 275,648$ grid points per time step. This is a prime example of a problem requiring Big Compute solutions.
+Hence, in this model, for each time step at each grid point, we will be reading in spatial information for $\beta$, $\gamma$, $d_S$, $d_I$, $d_R$ and computing the updates for $S$, $I$ and $R$. We will do this for $2944\times1792 =  5, 275,648$ grid points per time step. This is a prime example of a problem requiring Big Compute solutions lol.
