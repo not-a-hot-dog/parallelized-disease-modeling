@@ -3,9 +3,6 @@
 ## Problem
 <p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/data_cases_total.png" alt>
-</p>
-
-<p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/data_cases_pct.png" alt>
 <em>Images generated from our matrix with data aggregated from the US Census Bureau, Johns Hopkins University and the New York Times.</em>
 </p>
