@@ -6,6 +6,7 @@
 In order to run on the cluster, the required directory structure is shown below:
 
 ```
+generate_data.py
 data/
 |  matrix.npy
 project_runs/
@@ -19,11 +20,12 @@ project_runs/
 `matrix.npy` contains granular county-level data. Download instructions are provided below. `run.py` handles compilation and setting appropriate environment variables for number of cores. Slurm job parameters such as number of nodes, cores, runtime, and partition are updated in the `__main__` section of `run.py`, as well as number of timesteps to simulate for. The rest of the files are the actual models.
 
 ### Required Dependencies
-The compiler `gcc/8.2.0-fasrc1` is used. OpenMP comes prebuilt with the compiler. Python 3.7.7 is used. Runs are executed on the default Odyssey operating system at the time of submission: CentOS Linux release 7.6.1810 (Core). Executing the model is as simple as running `python run.py`.
+The compiler `gcc/8.2.0-fasrc1` is used. `OpenMP` comes prebuilt with the compiler. `Python 3.7.7` is used. Runs are executed on the default Odyssey operating system at the time of submission: `CentOS Linux release 7.6.1810 (Core)`.
 
 ### Running the simulation tools
 1. Use this [link](https://drive.google.com/file/d/1-iOfdYB9nqvazSthgwOlMHEa5q0RyXbn/view?fbclid=IwAR3xFKPT26JkwBLH0oB7WesWrTytM7ir1t9cjrPa3njt8zsip6nxq4BdmaU) and download `matrix.npy` into the `data/` subdirectory.
-2. Run `python run.py`.
+2. Run `python generate_data.py` (might take ~1 min) to create the required data CSVs that will be placed in the `data/` subdirectory.
+3. Run `python run.py` from `project_runs/`.
 
 ## Instructions for running on AWS
 
