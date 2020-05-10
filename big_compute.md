@@ -38,8 +38,6 @@ Additionally, number of timesteps are updated in the same section.
 The data matrices are generated from population and geographical data using `matrix.npy` and 
 
 ## Performance Evaluation`
-Performance evaluation (speed-up, throughput, weak and strong scaling) and discussion about overheads and optimizations done
-
 We see a fantastic level of parallelization as number of cores increases using strong scaling.
 No significant deviation from perfect speedup appears until approximately 15 cores are used.
 Note, despite AWS speedup being comparable, AWS was approximately 50% slower for each calculation.
