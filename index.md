@@ -1,8 +1,6 @@
 <div style="text-align: right"> <a href="https://github.com/not-a-hot-dog/parallelized-disease-modeling">Link to Github Repo</a> </div>  
 
 # Project Overview 
-<br>
-
 <p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/cover.png"/>
 </p>
