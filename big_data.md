@@ -10,7 +10,7 @@ To ensure that each square-mile of the 1792 x 2944 grid of continential U.S. tak
 Firstly, having realized that the earth is not flat, we had to use the [Haversine](https://en.wikipedia.org/wiki/Haversine_formula) formula to map each point in the 1792 x 2944 grid to a pair of coordinates corresponding to the latitude and longitude of that point.
 
 <p align="center">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Law-of-haversines.svg/220px-Law-of-haversines.svg.png" height="100"/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Law-of-haversines.svg/220px-Law-of-haversines.svg.png" height="100"/><br>
 <em>Illustration of Haversine distances</em>
 </p>
 
@@ -64,7 +64,7 @@ This comes the important step, where we implement the [ST_INTERSECTS method] (ht
 We then merged data on the original coordinates with the mapped counties and converted this into a RDD format, which is then saved as a text file on the Hadoop File System. A sample output of the text file is shown below, where the first and second column represent the latitude/longitude, the third and fourth columns represent the row and column position in the matrix and the last column represents the county GEOID.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/Spark_Output.PNG">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/Spark_Output.PNG"><br>
 <em>Sample GeoSpark Output</em>
 </p>
 
