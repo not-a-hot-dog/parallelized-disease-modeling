@@ -1,8 +1,6 @@
 # Big Compute
 
 ## Description of Parallel Application
-Technical description of the parallel application, programming models, platform and infrastructure
-
 OpenMP was used to parallelize computations in our model.
 Loop level parallelization was done to optimize performance.
 Explicit memory sharing was used for parameter matrices, as well as loop collapsing.
@@ -11,7 +9,6 @@ Odyssey was ultimately used for its superior performance.
 We found sufficient speedup using one node that multiple were unnecessary.
 
 ## Technical Description
-Technical description of the software design, code baseline, dependencies, how to use the code, and system and environment needed to reproduce your tests
 In order to run on the cluster, the required directory structure is shown below:
 
 ```
