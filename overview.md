@@ -1,8 +1,15 @@
-
-
 # Overview
 
 ## Problem
+<p align="center">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/data_cases_total.png" alt>
+</p>
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/data_cases_pct.png" alt>
+<em>Images generated from our matrix with data aggregated from the US Census Bureau, Johns Hopkins University and the New York Times.</em>
+</p>
+
 The global pandemic of COVID-19 has gripped the world causing significant changes in day-to-day life for a huge number of people. With any disease, and especially ones as dangerous as this one, it is important to understand how it spreads. Many models and projections exist already, but they are mostly on a coarse national/state scale. It is difficult for local authorities to fully understand the spread in their immediate regions and hence craft carefully-tailored policies. 
 
 ## Solution
@@ -11,6 +18,11 @@ We use a mechanistic model to help better understand the spread of COVID-19. We 
 In order to accurately model the spread, we take a $2944\times1792$ grid approximation of the US and run the spatio-temporal SIR model (explained in detail below) at each point on the grid.
 
 ## Description of model and data 
+<p align="center">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/data_sir_group.png" alt>
+<em>Plot of initial SIR parameters based on existing COVID-19 data.</em>
+</p>
+
 The temporal SIR model is a common epidemiological model ([Chen, et.al, 2020](https://arxiv.org/abs/2003.00122)) that tracks the number of Susceptible (S), Infected (I) and Removed (R) individuals in the population. Note that R consists of both recovered and dead people. To incorporate a spatial dimension, we use the more expressive spatio-temporal version ([Lotfi, et. al, 2014](https://www.hindawi.com/journals/ijpde/2014/186437/)) described by a set of partial differential equations:
 
 $$\begin{aligned}
@@ -22,6 +34,11 @@ $$\begin{aligned}
 As seen, this model explicitly considers the diffusion of the infection with the Laplacian operator and hence allows for a more complex and realistic simulation. We discretize the Laplacian as follows:
 
 $$\nabla^2 S \approx  \frac{S(x-\Delta x, y) + S(x+\Delta x,y) - 4S(x,y) +S(x,y-\Delta y) + S(x,y+\Delta y)}{\Delta x\Delta y}$$
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/data_beta_gamma.png" alt>
+<em>Plot of beta and gamma hyperparameters based on a 14 day average of COVID-19 infection and recovery/death rates</em>
+</p>
 
 In this model, $\beta$, $\gamma$, $d_S$, $d_I$, $d_R$ describe the transmission rate, recovery rate, susceptibilty diffusion rate, infection diffusion rate and recovery diffusion rate respectively. It is common in most models to consider them as fixed. However, in order to allow for a more granular simulation, our model considers $\beta(x,y)$, $\gamma(x,y)$, $d_S(x,y)$, $d_I(x,y)$, $d_R(x,y)$, ie we allow each parameter to be different for each grid point. This is a much more realistic description of the true underlying spread mechanism in which each local region has wildly differing characteristics. This means that we need to create $2944\times1792$ arrays for each of these parameters, which requires the complex processing of large amounts of granular data. This is a prime example of a problem requiring Big Data solutions. 
 
