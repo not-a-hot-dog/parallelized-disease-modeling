@@ -141,15 +141,15 @@ int main(int argc, char ** argv)
 
 	/* Process arguments */
 	nsteps = (argc > 1) ? atoi(argv[1]) : 100;
-	beta_filename = (argc > 2) ? argv[2] : "../data/beta.csv";
-	gamma_filename = (argc > 3) ? argv[3] : "../data/gamma.csv";
-	S_init_filename = (argc > 4) ? argv[4] : "../data/S_init.csv";
-	I_init_filename = (argc > 5) ? argv[5] : "../data/I_init.csv";
-	R_init_filename = (argc > 6) ? argv[6] : "../data/R_init.csv";
-	dS_filename = (argc > 7) ? argv[7] : "../data/dS.csv";
-	dI_filename = (argc > 8) ? argv[8] : "../data/dI.csv";
-	dR_filename = (argc > 9) ? argv[9] : "../data/dR.csv";
-	output_filename = (argc > 10) ? argv[10] : NULL;
+	output_filename = (argc > 2) ? argv[2] : NULL;
+	beta_filename = (argc > 3) ? argv[3] : "../data/beta.csv";
+	gamma_filename = (argc > 4) ? argv[4] : "../data/gamma.csv";
+	S_init_filename = (argc > 5) ? argv[5] : "../data/S_init.csv";
+	I_init_filename = (argc > 6) ? argv[6] : "../data/I_init.csv";
+	R_init_filename = (argc > 7) ? argv[7] : "../data/R_init.csv";
+	dS_filename = (argc > 8) ? argv[8] : "../data/dS.csv";
+	dI_filename = (argc > 9) ? argv[9] : "../data/dI.csv";
+	dR_filename = (argc > 10) ? argv[10] : "../data/dR.csv";
 	Xmax = (argc > 11) ? atoi(argv[11]) : 2944;
 	Ymax = (argc > 12) ? atoi(argv[12]) : 1792;
 
