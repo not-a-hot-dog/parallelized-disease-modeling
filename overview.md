@@ -1,6 +1,5 @@
-# Overview
-
-## Problem
+## Overview
+### Problem
 <p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/data_cases_total.png" alt>
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/data_cases_pct.png" alt>
@@ -9,12 +8,12 @@
 
 The global pandemic of COVID-19 has gripped the world causing significant changes in day-to-day life for a huge number of people. With any disease, and especially ones as dangerous as this one, it is important to understand how it spreads. Many models and projections exist already, but they are mostly on a coarse national/state scale. It is difficult for local authorities to fully understand the spread in their immediate regions and hence craft carefully-tailored policies. 
 
-## Solution
+### Solution
 We use a mechanistic model to help better understand the spread of COVID-19. We aim to generate projections on a more granular scale than current models. This empowers regional authorities to tailor containment measures to their demographic, rather than base policies on projections that are on a larger scale.
 
 In order to accurately model the spread, we take a <i>2944&#215;1792</i> grid approximation of the US and run the spatio-temporal SIR model (explained in detail below) at each point on the grid.
 
-## Description of model and data 
+### Description of model and data 
 <p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/data_sir_group.png" alt>
 <em>Plot of initial SIR parameters based on existing COVID-19 data.</em>

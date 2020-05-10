@@ -1,9 +1,9 @@
-# Big Compute
+## Big Compute
 <p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/odyssey_branding.png"/>
 </p>
 
-## Description of Parallel Application
+### Description of Parallel Application
 OpenMP was used to parallelize computations in our model.
 Loop level parallelization was done to optimize performance.
 Explicit memory sharing was used for parameter matrices, as well as loop collapsing.
@@ -11,7 +11,7 @@ We compared execution using a single node on the Odyssey cluster against an AWS 
 Odyssey was ultimately used for its superior performance.
 We found sufficient speedup using one node that multiple were unnecessary.
 
-## Technical Description
+### Technical Description
 In order to run on the cluster, the required directory structure is shown below:
 
 ```
@@ -41,7 +41,7 @@ Additionally, number of timesteps are updated in the same section.
 The data matrices are generated from population and geographical data using `matrix.npy` as specified in the simulation tool instructions.
 `run.py` handles compilation and setting appropriate environment variables for number of cores.
 
-## Performance Evaluation`
+### Performance Evaluation`
 We see a fantastic level of parallelization as number of cores increases using strong scaling.
 No significant deviation from perfect speedup appears until approximately 15 cores are used.
 Note, despite AWS speedup being comparable, AWS was approximately 50% slower for each calculation.

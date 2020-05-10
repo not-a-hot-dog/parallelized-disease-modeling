@@ -1,4 +1,4 @@
-# Big Data - Mapping a Square-Mile Grid of the U.S. to County Data
+## Big Data - Mapping a Square-Mile Grid of the U.S. to County Data
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/data_pop_density.png" alt>
@@ -16,7 +16,7 @@ Firstly, having realized that the earth is not flat, we had to use the [Haversin
 
 This returned us a coordinate matrix of size 1792 (North-South distance) x 2944 (East-West Distance) x 2 (Latitude & Longitude), which we then had to map to U.S. counties by their FIPS (Federal Information Processing Standard) code.
 
-## Challenge
+### Challenge
 
 Here, the challenge that is solved by parallel application is that of determining which county a specific coordinate belongs to, based on its longitude and latitude. This is not as straightforward as it sounds and we were unable to find any prior existing work that had done such a mapping.
 
@@ -44,7 +44,7 @@ We furthur verified our results by visually inspecting plots of our matrix again
 <em>Image generated from our 1792 x 2944 county matrix.</em>
 </p>
 
-## Description of Parallel Application
+### Description of Parallel Application
 
 Parallelizing this application via Spark did not seem possible since the functions do not include the ability to work with geometry objects containing information on the boundaries of the counties.
 
@@ -61,7 +61,7 @@ We used Amazon's EMR cluster to provide the Hadoop infrastructure required for i
 - Master Node: m4.2xlarge
 - Worker Node: m4.xlarge (varying from 1 to 16 nodes)
 
-## Implementation of Spark / GeoSpark
+### Implementation of Spark / GeoSpark
 
 First, after loading in a flattened matrix of coordinates as a Spark DataFrame, we use Spark SQL to create new column location with each location as a [ST_POINT](https://datasystemslab.github.io/GeoSpark/api/sql/GeoSparkSQL-Constructor/) object containing each coordinate pair.
 
@@ -83,7 +83,7 @@ We then merged data on the original coordinates with the mapped counties and con
 
 To put things in perspective, we processed **5,275,648** lines of the above using Spark.
 
-## Technical Description
+### Technical Description
 To implement this required bootstrapping the AWS EMR cluster using a Bash script ([link](https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/master/spark_files/bashscript_aws.sh)). Miniconda was used to install required packages across the nodes in the cluster, particularly because it handles the installation of GeoSpark and its dependencies.
 
 <p align="center">
@@ -110,7 +110,7 @@ The following two lines are also added to `/usr/lib/spark/conf/spark-env.sh`: <b
 `export PYSPARK_PYTHON=/home/hadoop/conda/bin/python`     
 `export PYSPARK_DRIVER_PYTHON=/home/hadoop/conda/bin/python`
 
-## Performance Evaluation
+### Performance Evaluation
 
 Our first attempt at implementing the county mapping operation using the multi-processing module on Python with 4 cores returned us with a run-time of 7 hours and 37 minutes.
 

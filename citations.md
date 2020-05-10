@@ -1,4 +1,4 @@
-# Citations
+\## Citations
 
 - Jia Yu, Zongsi Zhang, and Mohamed Sarwat. 2019. Spatial data management in apache spark: the GeoSpark perspective and beyond. Geoinformatica 23, 1 (January   2019), 37–78. DOI:https://doi.org/10.1007/s10707-018-0330-9
 
