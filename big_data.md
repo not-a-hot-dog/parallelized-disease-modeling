@@ -11,6 +11,7 @@ Firstly, having realized that the earth is not flat, we had to use the [Haversin
 
 <p align="center">
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Law-of-haversines.svg/220px-Law-of-haversines.svg.png" height="100"/>
+<em>Illustration of Haversine distances</em>
 </p>
 
 This returned us a coordinate matrix of size 1792 (North-South distance) x 2944 (East-West Distance) x 2 (Latitude & Longitude), which we then had to map to U.S. county IDs in the US. As of 2020, there are around 3,233 counties and county-equivalents in the 50 states and the District of Columbia, implying that some of these square-mile points map to more than one county/county-equivalent.
@@ -23,6 +24,7 @@ We obtained geographical information on U.S. counties from the Census' [TIGER Ge
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/County_Info.PNG">
+<em>Information from US Census data in a dataframe, with the last column containing cartographic boundaries</em>
 </p>
 
 To verify if each pair of coordinates fell within the geographical boundary of a county, the `within` Geopandas method had to be used, since there is no pre-existing hash table mapping every single unique coordinate to a county. Only if the method returned the value "True" would we assign the coordinate to a particular [GEOID](https://www.census.gov/programs-surveys/geography/guidance/geo-identifiers.html).
@@ -56,12 +58,14 @@ This comes the important step, where we implement the [ST_INTERSECTS method] (ht
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/Geospark_SQL.PNG">
+<em>SQL code to determine point intersection in GeoSpark</em>
 </p>
 
 We then merged data on the original coordinates with the mapped counties and converted this into a RDD format, which is then saved as a text file on the Hadoop File System. A sample output of the text file is shown below, where the first and second column represent the latitude/longitude, the third and fourth columns represent the row and column position in the matrix and the last column represents the county GEOID.
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/Spark_Output.PNG">
+<em>Sample GeoSpark Output</em>
 </p>
 
 To put things in perspective, we processed **5,275,648** lines of the above using Spark.
@@ -71,6 +75,7 @@ To implement this required bootstrapping the AWS EMR cluster using a Bash script
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/EMR_bash.PNG">
+<em>Screenshot of Bash Script</em>
 </p>
 
 The above script does the following:
@@ -82,6 +87,7 @@ Separately, to ensure that GeoSpark runs smoothly, the configuration below also 
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/EMR_config.PNG">
+<em>Screenshot of EMR configuration</em>
 </p>
 
 Lastly, the SPARK_HOME environment variables need to be set before running the Spark instance: <br>
@@ -97,18 +103,21 @@ Our first attempt at implementing the county mapping operation using the multi-p
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/python_runtime.PNG" height="150"/>
+<em>Screenshot of Python runtime for mapping task</em>
 </p>
 
-With Spark and Hadoop, we are talking about a completely different magnitude, with 130 seconds recorded as the fastest time with 16 m4.xlarge nodes, each with a supposed 4 cores (Ignacio: in reality a number of cores between 2 and 3).
+With Spark and Hadoop, we are talking about a completely different magnitude, with 130 seconds recorded as the fastest time with 16 m4.xlarge nodes, each with a supposed 4 cores.
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/Spark_Runtime.PNG">
+<em>Screenshot of GeoSpark runtime for mapping task</em>
 </p>
 
 As shown below, by varying the number of worker nodes from 2, 4, 8, 12, 16, we are able to plot the speed-up of the Spark application which plateaus as it increases, with a single worker node taking 436 seconds or ~7 minutes.
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/Speedup.png">
+<em>Speedup plot of Spark task</em>
 </p>
 
 While we observe some version of Strong Scaling predicted by Amdahl's Law, given the parallelization overheads undertaken by Spark in terms of communicating and synchronizing the data across the various nodes, it is expected that the speedup will plateau.
@@ -117,4 +126,5 @@ In fact, below, through the logs, we obtain a glimpse of how the YARN scheduler 
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/executors_killed.PNG">
+<em>Log file showing YARN scheduler "killing" executors</em>
 </p>
