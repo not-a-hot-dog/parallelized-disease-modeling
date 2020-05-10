@@ -5,6 +5,7 @@
 2. `gcc (with OpenMP support to run OpenMP version below)`.
 
 If running on a cluster, use the required module load commands suited to your cluster.
+
 If running on AWS, we recommend a t2.2xlarge instance with Ubuntu 16.04. Run `chmod +x setup.sh` followed by `setup.sh` to get the recommended dependencies.
 
 ## Instructions on using the simulation tools
