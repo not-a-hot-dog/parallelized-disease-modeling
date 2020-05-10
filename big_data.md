@@ -1,5 +1,10 @@
 # Big Data - Mapping a Square-Mile Grid of the U.S. to County Data
 
+<p align="center">
+<img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/data_pop_density.png" alt>
+<em>Image generated from our 1792 x 2944 county matrix.</em>
+</p>
+
 To ensure that each square-mile of the 1792 x 2944 grid of continential U.S. takes in granular demographic information relating to that square-mile, we would need to map each square-mile to a particular county. Our goal is to create a matrix with each entry in the matrix corresponding to a county ID, that can be then mapped to specific data relating to the county (e.g. population) This information can then be used to generate matrices of Betas and Gammas that can be fed into the SIR epidemic model.
 
 Firstly, having realized that the earth is not flat, we had to use the [Haversine](https://en.wikipedia.org/wiki/Haversine_formula) formula to map each point in the 1792 x 2944 grid to a pair of coordinates corresponding to the latitude and longitude of that point.
