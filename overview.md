@@ -13,11 +13,12 @@ We use a mechanistic model to help better understand the spread of COVID-19. We 
 
 In order to accurately model the spread, we take a <i>2944&#215;1792</i> grid approximation of the US and run the spatio-temporal SIR model (explained in detail below) at each point on the grid.
 
-### Description of model and data 
 <p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/data_sir_group.png" alt>
 <em>Plot of initial SIR parameters based on existing COVID-19 data.</em>
 </p>
+
+### Description of model and data 
 
 The temporal SIR model is a common epidemiological model ([Chen, et.al, 2020](https://arxiv.org/abs/2003.00122)) that tracks the number of Susceptible (S), Infected (I) and Removed (R) individuals in the population. Note that R consists of both recovered and dead people. To incorporate a spatial dimension, we use the more expressive spatio-temporal version ([Lotfi, et. al, 2014](https://www.hindawi.com/journals/ijpde/2014/186437/)) described by a set of partial differential equations:
 
