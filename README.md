@@ -1,5 +1,9 @@
 # Parallelized COVID-19 Modeling
 
+## Required Dependencies
+1. `python3`, with `numpy` and `matplotlib`.
+2. `gcc (with OpenMP support to run OpenMP version below)`.
+
 ## Instructions on using the simulation tools
 
 ### OpenMP version (Recommended, requires OpenMP and data download)
