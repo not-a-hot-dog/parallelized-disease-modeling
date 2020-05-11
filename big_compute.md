@@ -25,8 +25,6 @@ project_runs/
 |  run.py
 |  sir_data_omp.c
 |  template.sh
-|  timing.c
-|  timing.h
 results/
 ```
 
@@ -35,11 +33,13 @@ results/
 #### Required Dependencies
 The compiler `gcc/8.2.0-fasrc1` is used. `OpenMP` comes prebuilt with the compiler. `Python 3.7.7` is used. Runs are executed on the default Odyssey operating system at the time of submission: `CentOS Linux release 7.6.1810 (Core)`.
 
+Run `module load python/3.7.7-fasrc01` and `module load gcc/8.2.0-fasrc01` to get the required dependencies.
+
 #### Running the simulation tools
 1. Use this [link](https://drive.google.com/file/d/1-iOfdYB9nqvazSthgwOlMHEa5q0RyXbn/view?fbclid=IwAR3xFKPT26JkwBLH0oB7WesWrTytM7ir1t9cjrPa3njt8zsip6nxq4BdmaU) and download `matrix.npy` into the `data/` subdirectory.
-2. Run `python generate_data.py` (might take ~1 min) to create the required data CSVs that will be placed in the `data/` subdirectory.
+2. Run `python3 generate_data.py` (might take ~1 min) to create the required data CSVs that will be placed in the `data/` subdirectory.
 3. Run `python run.py` from `project_runs/`.
-4. Run `python generate_plot.py` from the main directory to create a visualization of the simulation result as `results/output.png`.
+4. Run `python3 generate_plot.py` from the main directory to create a visualization of the simulation result as `results/output.png`.
 
 ### Instructions for running on AWS
 
