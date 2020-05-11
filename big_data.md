@@ -117,6 +117,7 @@ Our first attempt at implementing the county mapping operation using the multi-p
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/python_runtime.PNG" height="150"/>
+<br>
 <em>Screenshot of Python runtime for mapping task</em>
 </p>
 
