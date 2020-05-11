@@ -56,7 +56,7 @@ models/
 |  sir_data.c
 |  timing.c
 |  timing.h
-|  speedup.py
+|  plot_speedup.py
 results/
 ```
 
