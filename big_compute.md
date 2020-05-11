@@ -25,6 +25,9 @@ project_runs/
 |  run.py
 |  sir_data_omp.c
 |  template.sh
+|  timing.c
+|  timing.h
+|  plot_speedup.py
 results/
 ```
 
@@ -54,9 +57,6 @@ data/
 models/
 |  sir_data_omp.c
 |  sir_data.c
-|  timing.c
-|  timing.h
-|  plot_speedup.py
 results/
 ```
 
