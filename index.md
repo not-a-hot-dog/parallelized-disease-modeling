@@ -1,4 +1,4 @@
-<div style="text-align: right"> <a href="https://github.com/not-a-hot-dog/parallelized-disease-modeling">Link to Github Repo</a> </div>  
+<div style="text-align: right"> <a href="https://github.com/not-a-hot-dog/parallelized-disease-modeling">GitHub</a> </div>  
 
 ## Project Overview 
 <p align="center">
