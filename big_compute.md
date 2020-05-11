@@ -56,6 +56,7 @@ models/
 |  sir_data.c
 |  timing.c
 |  timing.h
+|  speedup.py
 results/
 ```
 
@@ -79,6 +80,10 @@ We recommend running on an AWS t2.2xlarge instance with Ubuntu 16.04. `Python 3.
 4. Run `python3 generate_plot.py` from the main directory to create a visualization of the simulation result as `results/output.png`.
 
 ### Performance Evaluation
+To run performance evaluation and generate the speedup plot, it is recommended to significantly increase the number of steps (to about 1000) in order to see true speedup:
+1. Change `SPEEDUP` to `True` in `run.py`.
+2. After runs are completed, `python plot_speedup.py`
+The number of cores and partition can be modifies in `run.py` to generate more or less data for each run.
 We see a fantastic level of parallelization as number of cores increases using strong scaling.
 No significant deviation from perfect speedup appears until approximately 15 cores are used.
 Note, despite AWS speedup being comparable, AWS was approximately 50% slower for each calculation.
