@@ -43,7 +43,8 @@ h4, h5, h6 {
 }
 
 h3 {
-  font-size: 21px;
+  font-size: 22px;
+  line-height: 24px;
   font-family: 'OpenSansRegular', "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   font-weight: bold;
   color: #b6b6b6;
@@ -62,17 +63,7 @@ a {
   &:hover {
     color: #d40018;
   }
-	
-code {
-  font-family: Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal, monospace;
-  background: #e0e0e0;
-  color:#efefef;
-  font-size:13px;
-  text-shadow: 0px 1px 0px #000;
-  margin: 0;
-  padding: 0;
-  border-radius: 2px;
-  }
+}
 
 a small {
   font-size:14px;
@@ -108,6 +99,16 @@ blockquote {
   font-style:italic;
 }
 
+code {
+  font-family: Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal, monospace;
+  background: #ffffff;
+  color:#000000;
+  font-size:13px;
+  margin: 0 4px;
+  padding: 4px 6px;
+  border-radius: 2px;
+}
+
 pre {
   padding:8px 15px;
   background: #191919;
@@ -116,6 +117,13 @@ pre {
   box-shadow: inset 0 1px 3px rgba(0,0,0,.3);
   overflow: auto;
   overflow-y: hidden;
+
+code {
+    color: #efefef;
+    text-shadow: 0px 1px 0px #000;
+    margin: 0;
+    padding: 0;
+  }
 }
 
 table {
