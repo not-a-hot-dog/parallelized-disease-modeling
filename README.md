@@ -14,6 +14,9 @@ project_runs/
 |  run.py
 |  sir_data_omp.c
 |  template.sh
+|  timing.c
+|  timing.h
+|  plot_speedup.py
 results/
 ```
 
