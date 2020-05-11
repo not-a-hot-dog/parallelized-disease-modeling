@@ -10,4 +10,4 @@
 #SBATCH -e OUTPUTDIR/err_%j.txt # File to which STDERR will be written
 export SLURM_CPUS_PER_TASK=NC
 export OMP_NUM_THREADS=NC
-srun sir STEPS OUTPUTDIR/output > OUTPUTDIR/results.txt
+srun sir_data_omp STEPS OUTPUTDIR/output > OUTPUTDIR/results.txt
