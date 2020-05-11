@@ -51,7 +51,7 @@ results/
 `matrix.npy` contains granular county-level data. Download instructions are provided below. `generate_data.py` creates the required data CSVs from `matrix.py` and stores them in `data/`. `generate_plot.py` reads in the simulation output from `results/output` and plots them in `results/output.png`. The rest of the files are the actual models.
 
 ### Required Dependencies
-We recommend running on an AWS t2.2xlarge instance with Ubuntu 16.04. `Python 3.7.7` was used, with `numpy` and `matplotlib`. The `gcc 5.5.0` compiler was used, with OpenMP support needed to run the OpenMP version below. Run `chmod +x setup.sh` followed by `setup.sh` to get these recommended dependencies.
+We recommend running on an AWS t2.2xlarge instance with Ubuntu 16.04. `Python 3.5.2` was used, with `numpy` and `matplotlib`. The `gcc 5.5.0` compiler was used, with OpenMP support needed to run the OpenMP version below.
 
 ### Running the simulation tools
 
