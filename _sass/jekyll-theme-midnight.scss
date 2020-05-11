@@ -63,6 +63,17 @@ a {
   &:hover {
     color: #d40018;
   }
+	
+code {
+  font-family: Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal, monospace;
+  background: #e0e0e0;
+  color: #ffffff;
+  text-shadow: 0px 1px 0px #000;
+  font-size:13px;
+  margin: 1;
+  padding: 1;
+  border-radius: 2px;
+  }
 }
 
 a small {
