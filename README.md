@@ -35,7 +35,6 @@ The compiler `gcc/8.2.0-fasrc1` is used. `OpenMP` comes prebuilt with the compil
 In order to run on AWS, the required directory structure is shown below:
 
 ```
-setup.sh
 generate_data.py
 generate_plot.py
 data/
@@ -66,3 +65,8 @@ We recommend running on an AWS t2.2xlarge instance with Ubuntu 16.04. `Python 3.
 2. Run `python3 generate_data.py` (might take ~1 min) to create the required data CSVs that will be placed in the `data/` subdirectory.
 3. In `models/`, run `gcc -DUSE_CLOCK sir_data.c timing.c -o sir_data` to compile the simulation code. Execute with `./sir_data 10 ../results/output` to run the simulation for 10 timesteps and save the output.
 4. Run `python3 generate_plot.py` from the main directory to create a visualization of the simulation result as `results/output.png`.
+
+## Instructions for running Big Data methods
+
+Kindly refer to the README in `spark_files`.
+
