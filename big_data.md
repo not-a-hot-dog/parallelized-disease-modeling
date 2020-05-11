@@ -100,6 +100,7 @@ Separately, to ensure that GeoSpark runs smoothly, the configuration below also 
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/not-a-hot-dog/parallelized-disease-modeling/gh-pages/_images/EMR_config.PNG">
+<br>
 <em>Screenshot of EMR configuration</em>
 </p>
 
