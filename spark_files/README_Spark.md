@@ -9,7 +9,7 @@ The Bash script does the following:
 
 2) When setting up the EMR cluster, include the geospark.json file in this folder as part of the cluster configuration
 
-3)When launching the EMR cluster, specify the SPARK_HOME environment variable as `/usr/lib/spark` by using the following command or adding it to .bashrc: 
+3) When launching the EMR cluster, specify the SPARK_HOME environment variable as `/usr/lib/spark` by using the following command or adding it to .bashrc: 
 `export SPARK_HOME=/usr/lib/spark`
 
 4) The following two lines are also added to /usr/lib/spark/conf/spark-env.sh:
