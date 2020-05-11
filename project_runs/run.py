@@ -33,7 +33,7 @@ def submit_job(outdir, template, nn=1, nc=4, mem=1000, partition='test', time='0
     f.close()
 
     # Compile
-    os.system('gcc -DUSE_CLOCK -fopenmp sir_data_omp.c timing.c -o sir')
+    os.system('gcc -fopenmp sir_data_omp.c -o sir_data_omp')
 
     # Run it
     ret = subprocess.call('sbatch {}'.format(sname).split(' '))
