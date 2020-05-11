@@ -46,6 +46,7 @@ The compiler `gcc/8.2.0-fasrc1` is used. `OpenMP` comes prebuilt with the compil
 In order to run on AWS, the required directory structure is shown below:
 
 ```
+setup.sh
 generate_data.py
 generate_plot.py
 data/
