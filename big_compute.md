@@ -27,6 +27,7 @@ project_runs/
 |  template.sh
 |  timing.c
 |  timing.h
+results/
 ```
 
 `matrix.npy` contains granular county-level data. Download instructions are provided below. `generate_data.py` creates the required data CSVs from `matrix.py` and stores them in `data/`. `generate_plot.py` reads in the simulation output from `results/output` and plots them in `results/output.png`. `run.py` handles compilation and setting appropriate environment variables for number of cores. Slurm job parameters such as number of nodes, cores, runtime, and partition are updated in the `__main__` section of `run.py`, as well as number of timesteps to simulate for. The rest of the files are the actual models.
